@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import Navbar from './Navbar';
 
 const Base = ({
   title = "My Title",
@@ -8,6 +9,7 @@ const Base = ({
 }) => {
   return (
     <div>
+      <Navbar />
       <div className="container-fluid">
         <div className="jombotron bg-dark text-white text-center">
           <h2 className="display-4">{title}</h2>
