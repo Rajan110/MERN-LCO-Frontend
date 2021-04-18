@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { addCategory } from "./helper/adminapicall";
+import { addCategory, getCategories } from "./helper/adminapicall";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const { user, token } = isAuthenticated();
 
@@ -49,6 +50,27 @@ const AddCategory = () => {
         setError(error);
       });
   };
+
+  useEffect(() => {
+    setError("");
+    setSuccess(false);
+    getCategories()
+      .then((data) => {
+        if (data.error) {
+          data.error.message
+            ? setError(data.error.message)
+            : setError(data.error);
+          setSuccess(false);
+        } else {
+          setError("");
+          setCategories(data.categories);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
+  }, [success]);
 
   const successMessage = () => {
     if (success) {
@@ -106,6 +128,20 @@ const AddCategory = () => {
     );
   };
 
+  const showCategories = () => {
+    return (
+      <div className="row">
+        <div className="col my-3 text-dark">
+          <h2>Existing Categories</h2>
+          <br />
+          {categories.map((cat) => {
+            return <h4 className="text-success">{cat.name}</h4>;
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <Base
       title="Add Category"
@@ -119,6 +155,7 @@ const AddCategory = () => {
           {addCategoryForm()}
           {adminHome()}
           <p className="text-dark">{JSON.stringify(name)}</p>
+          {showCategories()}
         </div>
       </div>
     </Base>
