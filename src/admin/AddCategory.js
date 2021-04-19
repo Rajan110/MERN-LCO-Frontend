@@ -14,8 +14,8 @@ const AddCategory = () => {
 
   const adminHome = () => {
     return (
-      <div className="mt-5">
-        <Link className="btn btn-sm btn-success mb-3" to="/admin/dashboard">
+      <div>
+        <Link className="btn btn-sm btn-success my-2" to="/admin/dashboard">
           Admin Home
         </Link>
       </div>
@@ -131,9 +131,8 @@ const AddCategory = () => {
   const showCategories = () => {
     return (
       <div className="row">
-        <div className="col my-3 text-dark">
-          <h2>Existing Categories</h2>
-          <br />
+        <div className="col text-dark">
+          <h2 className="text-white">Existing Categories</h2>
           {categories.map((cat) => {
             return <h4 className="text-success">{cat.name}</h4>;
           })}
@@ -148,13 +147,13 @@ const AddCategory = () => {
       description="Add New Categories / Collection"
       className="container bg-success p-4"
     >
-      <div className="row bg-white rounded">
-        <div className="col-md-8 offset-md-1">
+      <div className="row bg-dark text-white rounded">
+        <div className="col-md-8 offset-md-2">
           {successMessage()}
           {errorMessage()}
           {addCategoryForm()}
           {adminHome()}
-          <p className="text-dark">{JSON.stringify(name)}</p>
+          <p className="text-white">{JSON.stringify(name)}</p>
           {showCategories()}
         </div>
       </div>
