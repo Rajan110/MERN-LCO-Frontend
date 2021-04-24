@@ -46,9 +46,10 @@ const AddProduct = () => {
             : setValues({ ...values, error: data.error });
           setValues({ ...values, success: false });
         } else {
-          setValues({ ...values, error: "", success: true });
           setValues({
             ...values,
+            error: "",
+            success: true,
             categories: data.categories,
             formData: new FormData(),
           });
@@ -152,7 +153,7 @@ const AddProduct = () => {
           <option>Select</option>
           {categories &&
             categories.map((category, index) => (
-              <option id={index} value={category._id}>
+              <option id={index} key={index} value={category._id}>
                 {category.name}
               </option>
             ))}

@@ -10,6 +10,8 @@ import UserDashboard from "./user/UserDashBoard";
 import AdminDashboard from "./user/AdminDashBoard";
 import AddCategory from "./admin/AddCategory";
 import AddProduct from "./admin/AddProduct";
+import ManageProducts from "./admin/ManageProducts";
+import UpdateProduct from "./admin/UpdateProduct";
 
 const Routes = () => {
   return (
@@ -29,6 +31,12 @@ const Routes = () => {
           path="/admin/create/products"
           exact
           component={AddProduct}
+        />
+        <AdminRoute path="/admin/products" exact component={ManageProducts} />
+        <AdminRoute
+          path="/admin/product/update/:productId"
+          exact
+          component={UpdateProduct}
         />
       </Switch>
     </Router>
