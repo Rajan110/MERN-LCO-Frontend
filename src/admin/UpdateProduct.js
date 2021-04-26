@@ -41,7 +41,7 @@ const UpdateProduct = ({ match }) => {
     formData,
   } = values;
 
-  const preload = (productId) => {
+  const preload = (productId, categorys) => {
     getProduct(productId)
       .then((data) => {
         if (data.error) {
@@ -58,6 +58,7 @@ const UpdateProduct = ({ match }) => {
             price: data.product.price,
             stock: data.product.stock,
             category: data.product.category._id,
+            categories: categorys,
             formData: new FormData(),
           });
           //preloadCategories();
@@ -73,20 +74,9 @@ const UpdateProduct = ({ match }) => {
     getCategories()
       .then((data) => {
         if (data.error) {
-          data.error.message
-            ? setValues({
-                ...values,
-                error: data.error.message,
-                success: false,
-              })
-            : setValues({ ...values, error: data.error, success: false });
+          setValues({ ...values, error: data.error?.message, success: false });
         } else {
-          setValues({
-            ...values,
-            categories: data.categories,
-            formData: new FormData(),
-          });
-          preload(match.params.productId);
+          preload(match.params.productId, data.categories);
         }
       })
       .catch((error) => {
@@ -187,9 +177,14 @@ const UpdateProduct = ({ match }) => {
         >
           <option>Select Category</option>
           {categories &&
-            categories.map((category, index) => (
-              <option id={index} key={index} value={category._id}>
-                {category.name}
+            categories.map((cat, index) => (
+              <option
+                id={index}
+                key={index}
+                value={cat._id}
+                selected={cat._id === category}
+              >
+                {cat.name}
               </option>
             ))}
         </select>
@@ -223,7 +218,7 @@ const UpdateProduct = ({ match }) => {
               className="alert alert-success"
               style={{ display: createdProduct ? "" : "none" }}
             >
-              {createdProduct} Created Successfully.
+              {createdProduct} Updated Successfully.
             </div>
           </div>
         </div>

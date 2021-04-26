@@ -41,10 +41,7 @@ const AddProduct = () => {
     getCategories()
       .then((data) => {
         if (data.error) {
-          data.error.message
-            ? setValues({ ...values, error: data.error.message })
-            : setValues({ ...values, error: data.error });
-          setValues({ ...values, success: false });
+          setValues({ ...values, error: data.error?.message, success: false });
         } else {
           setValues({
             ...values,
@@ -71,13 +68,7 @@ const AddProduct = () => {
     createProduct(user._id, token, formData)
       .then((data) => {
         if (data.error) {
-          data.error.message
-            ? setValues({
-                ...values,
-                error: data.error.message,
-                success: false,
-              })
-            : setValues({ ...values, error: data.error, success: false });
+          setValues({ ...values, error: data.error?.message, success: false });
         } else {
           setValues({
             ...values,

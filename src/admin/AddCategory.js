@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { addCategory, getCategories } from "./helper/adminapicall";
+import {
+  addCategory,
+  deleteCategory,
+  getCategories,
+  getCategory,
+} from "./helper/adminapicall";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [is_deleted, setDeleted] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [categoryObj, setCategoryObj] = useState("");
 
   const { user, token } = isAuthenticated();
 
@@ -35,9 +42,7 @@ const AddCategory = () => {
     addCategory(user._id, token, { name })
       .then((data) => {
         if (data.error) {
-          data.error.message
-            ? setError(data.error.message)
-            : setError(data.error);
+          setError(data.error?.message);
           setSuccess(false);
         } else {
           setError("");
@@ -51,15 +56,29 @@ const AddCategory = () => {
       });
   };
 
+  const loadCategory = (categoryId) => {
+    getCategory(categoryId)
+      .then((data) => {
+        if (data.error) {
+          setError(data.error?.message);
+        } else {
+          setError(false);
+          setCategoryObj(data.category);
+        }
+      })
+      .catch((error) => {
+        setError(error);
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     setError("");
     setSuccess(false);
     getCategories()
       .then((data) => {
         if (data.error) {
-          data.error.message
-            ? setError(data.error.message)
-            : setError(data.error);
+          setError(data.error?.message);
           setSuccess(false);
         } else {
           setError("");
@@ -128,17 +147,91 @@ const AddCategory = () => {
     );
   };
 
+  const editCategoryForm = () => {
+    return (
+      <form>
+        <div className="form-group">
+          <p className="lead">Edit Category / Collection</p>
+          <input
+            onChange={handleChange}
+            value={categoryObj.name}
+            type="text"
+            className="form-control my-3"
+            autoFocus
+            required
+            placeholder="For Eg. Spring Collection"
+          />
+          <button className="btn btn-outline-success" onClick={submitCategory}>
+            Edit Category
+          </button>
+        </div>
+      </form>
+    );
+  };
+
+  const deleteThisCategory = (categoryId) => {
+    deleteCategory(categoryId, user._id, token)
+      .then((data) => {
+        if (data.error) {
+          setError(data.error);
+          setSuccess(false);
+        } else {
+          setError("");
+          setSuccess(true);
+          setDeleted(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
+  };
+
   const showCategories = () => {
     return (
       <div className="row">
         <div className="col text-dark">
           <h2 className="text-white">Existing Categories</h2>
-          {categories.map((cat) => {
-            return <h4 className="text-success">{cat.name}</h4>;
+          {categories.map((cat, index) => {
+            return (
+              <div key={index} className="row text-center my-2 ">
+                <div className="col-4">
+                  <h4 className="text-success">{cat.name}</h4>
+                </div>
+                <div className="col-4">
+                  <button
+                    onClick={() => {
+                      loadCategory(cat._id);
+                    }}
+                    className="btn btn-success"
+                  >
+                    Update
+                  </button>
+                </div>
+                <div className="col-4">
+                  <button
+                    onClick={() => {
+                      deleteThisCategory(cat._id);
+                    }}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            );
           })}
         </div>
       </div>
     );
+  };
+
+  const renderForm = () => {
+    if (categoryObj != null && categoryObj !== "") {
+      return editCategoryForm();
+    } else {
+      return addCategoryForm();
+    }
   };
 
   return (
@@ -151,7 +244,7 @@ const AddCategory = () => {
         <div className="col-md-8 offset-md-2">
           {successMessage()}
           {errorMessage()}
-          {addCategoryForm()}
+          {renderForm()}
           {adminHome()}
           <p className="text-white">{JSON.stringify(name)}</p>
           {showCategories()}
