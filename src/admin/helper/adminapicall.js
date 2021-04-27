@@ -33,6 +33,24 @@ export const getCategory = (categoryId) => {
     .catch((err) => console.log(err));
 };
 
+//Update Category
+
+export const updateCategory = (categoryId, userId, token, category_name) => {
+  return fetch(`${API}/category/${categoryId}/${userId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(category_name),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
 //Delete Category
 
 export const deleteCategory = (categoryId, userId, token) => {

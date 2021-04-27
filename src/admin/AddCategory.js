@@ -9,20 +9,22 @@ import {
   getCategory,
 } from "./helper/adminapicall";
 
+import { updateCategory } from "./helper/adminapicall";
+
 const AddCategory = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [is_deleted, setDeleted] = useState(false);
+  //const [is_deleted, setDeleted] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [categoryObj, setCategoryObj] = useState("");
+  const [categoryObj, setCategoryObj] = useState(null);
 
   const { user, token } = isAuthenticated();
 
   const adminHome = () => {
     return (
       <div>
-        <Link className="btn btn-sm btn-success my-2" to="/admin/dashboard">
+        <Link className="btn btn-sm btn-dark mb-4" to="/admin/dashboard">
           Admin Home
         </Link>
       </div>
@@ -32,28 +34,52 @@ const AddCategory = () => {
   const handleChange = (event) => {
     event.preventDefault();
     setError(false);
-    setName(event.target.value);
+    if (categoryObj === null) {
+      setName(event.target.value);
+    } else {
+      setCategoryObj({ ...categoryObj, name: event.target.value });
+    }
   };
 
   const submitCategory = (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
-    addCategory(user._id, token, { name })
-      .then((data) => {
-        if (data.error) {
-          setError(data.error?.message);
-          setSuccess(false);
-        } else {
-          setError("");
-          setSuccess(true);
-          setName("");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(error);
-      });
+
+    if (categoryObj === null) {
+      addCategory(user._id, token, { name })
+        .then((data) => {
+          if (data.error) {
+            setError(data.error?.message);
+            setSuccess(false);
+          } else {
+            setError("");
+            setSuccess(true);
+            setName("");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error);
+        });
+    } else {
+      updateCategory(categoryObj._id, user._id, token, categoryObj)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error?.message);
+            setSuccess(false);
+          } else {
+            setError("");
+            setSuccess(true);
+            setCategoryObj(null);
+            setName("");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error);
+        });
+    }
   };
 
   const loadCategory = (categoryId) => {
@@ -63,7 +89,7 @@ const AddCategory = () => {
           setError(data.error?.message);
         } else {
           setError(false);
-          setCategoryObj(data.category);
+          setCategoryObj(data);
         }
       })
       .catch((error) => {
@@ -154,7 +180,7 @@ const AddCategory = () => {
           <p className="lead">Edit Category / Collection</p>
           <input
             onChange={handleChange}
-            value={categoryObj.name}
+            value={categoryObj && categoryObj.name}
             type="text"
             className="form-control my-3"
             autoFocus
@@ -178,7 +204,7 @@ const AddCategory = () => {
         } else {
           setError("");
           setSuccess(true);
-          setDeleted(true);
+          //setDeleted(true);
         }
       })
       .catch((error) => {
@@ -227,7 +253,7 @@ const AddCategory = () => {
   };
 
   const renderForm = () => {
-    if (categoryObj != null && categoryObj !== "") {
+    if (categoryObj !== null && categoryObj?.name !== "") {
       return editCategoryForm();
     } else {
       return addCategoryForm();
@@ -237,16 +263,16 @@ const AddCategory = () => {
   return (
     <Base
       title="Add Category"
-      description="Add New Categories / Collection"
+      description="Add & Manage Categories / Collection"
       className="container bg-success p-4"
     >
+      {adminHome()}
       <div className="row bg-dark text-white rounded">
         <div className="col-md-8 offset-md-2">
           {successMessage()}
           {errorMessage()}
           {renderForm()}
-          {adminHome()}
-          <p className="text-white">{JSON.stringify(name)}</p>
+          {/* <p className="text-white">{JSON.stringify(name)}</p> */}
           {showCategories()}
         </div>
       </div>

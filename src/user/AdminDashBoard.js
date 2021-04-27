@@ -14,11 +14,13 @@ const AdminDashBoard = () => {
         <h5 className="card-header bg-dark text-white">Admin Navigation</h5>
         <ul className="list-group">
           <li className="list-group-item  text-center">
-            <Link
-              to="/admin/create/categories"
-              className="nav-link text-success"
-            >
+            <Link to="/admin/categories" className="nav-link text-success">
               Create Categories
+            </Link>
+          </li>
+          <li className="list-group-item  text-center">
+            <Link to="/admin/categories" className="nav-link text-success">
+              Manage Categories
             </Link>
           </li>
           <li className="list-group-item text-center">
@@ -64,7 +66,11 @@ const AdminDashBoard = () => {
   };
 
   return (
-    <Base title="Admin Dashboard" description="Manage Your Store" className="container bg-success p-3">
+    <Base
+      title="Admin Dashboard"
+      description="Manage Your Store"
+      className="container bg-success p-3"
+    >
       <div className="row">
         <div className="col-3">{adminLeftSide()}</div>
         <div className="col-9">{adminRightSide()}</div>

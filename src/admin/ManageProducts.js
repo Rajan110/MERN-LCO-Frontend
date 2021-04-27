@@ -55,7 +55,7 @@ const ManageProducts = () => {
   return (
     <Base title="Manage Products" description="Manage Your Products Here">
       <h2 className="mb-4">All products:</h2>
-      <Link className="btn btn-info" to={`/admin/dashboard`}>
+      <Link className="btn btn-success" to={`/admin/dashboard`}>
         <span className="">Admin Home</span>
       </Link>
       <div className="row">
