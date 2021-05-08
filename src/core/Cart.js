@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Base from "./Base";
 import Card from "./Card";
 import { loadcart } from "./helper/cartHelper";
+import StripeCheckout from "./helper/StripeCheckout";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState(null);
@@ -59,7 +60,16 @@ const Cart = () => {
     <Base title="Cart" description="Manage your cart Here!!">
       <div className="row text-center">
         <div className="col-md-8">{productsComponent()}</div>
-        <div className="col-md-4">{checkoutComponent()}</div>
+        <div className="col-md-4">
+          <div className="row">
+            <div className="col">{checkoutComponent()}</div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <StripeCheckout products={cartProducts} />
+            </div>
+          </div>
+        </div>
       </div>
     </Base>
   );
