@@ -44,3 +44,17 @@ export const emptyCart = (next) => {
     }
   }
 };
+
+export const getTotalAmount = () => {
+  let total = 0;
+  if (typeof window !== undefined) {
+    if (localStorage.getItem("cart")) {
+      let cartProducts = JSON.parse(localStorage.getItem("cart"));
+      cartProducts &&
+        cartProducts.forEach((product) => {
+          total = product.price * product.count + total;
+        });
+      return total || 0;
+    }
+  }
+};

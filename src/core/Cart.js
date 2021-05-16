@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Base from "./Base";
 import Card from "./Card";
-import { loadcart } from "./helper/cartHelper";
+import { getTotalAmount, loadcart } from "./helper/cartHelper";
 import StripeCheckout from "./helper/StripeCheckout";
 
 const Cart = () => {
@@ -41,19 +41,10 @@ const Cart = () => {
         <h3 className="text-white">Checkout</h3>
         <div className="border border-success rounded">
           <h2 className="text-secondary">Checkout Stuffs Here</h2>
-          <h4 className="text-white">Grand Total : {total()}</h4>
+          <h4 className="text-white">Grand Total : {getTotalAmount()}</h4>
         </div>
       </div>
     );
-  };
-
-  const total = () => {
-    let total = 0;
-    cartProducts &&
-      cartProducts.forEach((product) => {
-        total = product.price * product.count + total;
-      });
-    return total || 0;
   };
 
   return (
