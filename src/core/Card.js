@@ -3,7 +3,13 @@ import { Redirect } from "react-router";
 import ImageHelper from "./helper/ImageHelper";
 import { addItemToCart, removeItemFromCart } from "./helper/cartHelper";
 
-const Card = ({ product, addToCart = true, removeFromCart = false }) => {
+const Card = ({
+  product,
+  addToCart = true,
+  removeFromCart = false,
+  forceRefreshCart = (f) => f, //function (f) {return f}
+  refreshCart = undefined,
+}) => {
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
 
@@ -19,10 +25,8 @@ const Card = ({ product, addToCart = true, removeFromCart = false }) => {
     });
   };
 
-  const removeProductFromCart = () => {
-    removeItemFromCart(product, () => {
-      //setRedirect(true);
-    });
+  const removeProductFromCart = (productId) => {
+    removeItemFromCart(productId);
   };
 
   const showAddToCart = (addToCart) => {
@@ -45,7 +49,10 @@ const Card = ({ product, addToCart = true, removeFromCart = false }) => {
       removeFromCart && (
         <div className="col-12">
           <button
-            onClick={removeProductFromCart}
+            onClick={() => {
+              removeProductFromCart(product._id);
+              forceRefreshCart(!refreshCart);
+            }}
             className="btn btn-block btn-outline-danger mt-2 mb-2"
           >
             Remove from cart

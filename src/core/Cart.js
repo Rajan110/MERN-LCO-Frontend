@@ -6,12 +6,13 @@ import StripeCheckout from "./helper/StripeCheckout";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState(null);
+  const [refreshCart, setRefreshCart] = useState(false);
 
   useEffect(() => {
     setCartProducts(loadcart());
-  }, [cartProducts]);
+  }, [refreshCart]);
 
-  const productsComponent = () => {
+  const productsComponent = (cartProducts) => {
     return (
       <div>
         <h3 className="text-success">
@@ -26,6 +27,8 @@ const Cart = () => {
                     product={prod}
                     addToCart={false}
                     removeFromCart={true}
+                    forceRefreshCart={setRefreshCart}
+                    refreshCart={refreshCart}
                   />
                 </div>
               );
@@ -50,14 +53,18 @@ const Cart = () => {
   return (
     <Base title="Cart" description="Manage your cart Here!!">
       <div className="row text-center">
-        <div className="col-md-8">{productsComponent()}</div>
+        <div className="col-md-8">{productsComponent(cartProducts)}</div>
         <div className="col-md-4">
           <div className="row">
             <div className="col">{checkoutComponent()}</div>
           </div>
           <div className="row">
             <div className="col">
-              <StripeCheckout products={cartProducts} />
+              <StripeCheckout
+                products={cartProducts}
+                forceRefreshCart={setRefreshCart}
+                refreshCart={refreshCart}
+              />
             </div>
           </div>
         </div>

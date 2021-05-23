@@ -1,5 +1,3 @@
-import React from "react";
-
 export const addItemToCart = (item, next) => {
   let cart = [];
   if (typeof window !== undefined) {
@@ -12,26 +10,28 @@ export const addItemToCart = (item, next) => {
   }
 };
 
-export const removeItemFromCart = (item, next) => {
+export const removeItemFromCart = (productId) => {
   let cart = [];
   if (typeof window !== undefined) {
     if (localStorage.getItem("cart")) {
       cart = JSON.parse(localStorage.getItem("cart"));
     }
     cart.map((product, index) => {
-      if (item._id === product._id) {
+      if (productId === product._id) {
         cart.splice(index, 1);
       }
     });
     localStorage.setItem("cart", JSON.stringify(cart));
-    next();
   }
+  return cart;
 };
 
 export const loadcart = () => {
   if (typeof window !== undefined) {
     if (localStorage.getItem("cart")) {
       return JSON.parse(localStorage.getItem("cart"));
+    } else {
+      return null;
     }
   }
 };
