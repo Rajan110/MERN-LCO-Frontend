@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { isAuthenticated } from "../auth/helper";
 import Base from "./Base";
 import Card from "./Card";
 import { getTotalAmount, loadcart } from "./helper/cartHelper";
 import StripeCheckout from "./helper/StripeCheckout";
+import PayViaPaypal from "./PayViaPaypal";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState(null);
   const [refreshCart, setRefreshCart] = useState(false);
+
+  const { user = null, token } = isAuthenticated();
 
   useEffect(() => {
     setCartProducts(loadcart());
@@ -27,6 +32,7 @@ const Cart = () => {
                     product={prod}
                     addToCart={false}
                     removeFromCart={true}
+                    goToCart={false}
                     forceRefreshCart={setRefreshCart}
                     refreshCart={refreshCart}
                   />
@@ -58,15 +64,35 @@ const Cart = () => {
           <div className="row">
             <div className="col">{checkoutComponent()}</div>
           </div>
-          <div className="row">
-            <div className="col">
-              <StripeCheckout
-                products={cartProducts}
-                forceRefreshCart={setRefreshCart}
-                refreshCart={refreshCart}
-              />
+
+          {user !== null ? (
+            <div>
+              <div className="row">
+                <div className="col">
+                  <StripeCheckout
+                    products={cartProducts}
+                    forceRefreshCart={setRefreshCart}
+                    refreshCart={refreshCart}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <PayViaPaypal
+                    products={cartProducts}
+                    forceRefreshCart={setRefreshCart}
+                    refreshCart={refreshCart}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <Link to="/signin">
+                <button className="btn btn-info mt-4">Sign In</button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </Base>

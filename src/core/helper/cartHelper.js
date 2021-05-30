@@ -54,7 +54,7 @@ export const getTotalAmount = () => {
         cartProducts.forEach((product) => {
           total = product.price * product.count + total;
         });
-      return total || 0;
     }
+    return total || 0;
   }
 };

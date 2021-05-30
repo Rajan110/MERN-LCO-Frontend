@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../auth/helper";
 import { emptyCart, getTotalAmount } from "./cartHelper";
@@ -17,7 +17,7 @@ const StripeCheckout = ({
     address: "",
   });*/
 
-  const { user, token } = isAuthenticated();
+  const { user = null, token } = isAuthenticated();
   const authToken = token;
 
   const makePayment = (token) => {
@@ -49,7 +49,7 @@ const StripeCheckout = ({
   };
 
   const showStripeButton = () => {
-    return isAuthenticated() ? (
+    return user !== null ? (
       <StripeCheckoutBtn
         stripeKey="pk_test_51IpAQYSFW61jmqV3m9F6IsHsigSGVJcuzBrkXDIjqLzMbTBk6fI22fm4luA2WlXN184WwyKEvYeQef0P0R94Z41D00hvf5jo2q"
         token={makePayment}

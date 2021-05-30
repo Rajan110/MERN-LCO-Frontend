@@ -11,6 +11,8 @@ const Card = ({
   refreshCart = undefined,
 }) => {
   const [redirect, setRedirect] = useState(false);
+  const [showGoToCart, setShowGoToCart] = useState(false);
+  const [hideAddToCart, setHideAddToCart] = useState(false);
   const [count, setCount] = useState(product.count);
 
   const getRedirect = () => {
@@ -21,7 +23,9 @@ const Card = ({
 
   const addProductToCart = () => {
     addItemToCart(product, () => {
-      setRedirect(true);
+      setHideAddToCart(true);
+      setShowGoToCart(true);
+      //setRedirect(true);
     });
   };
 
@@ -31,6 +35,7 @@ const Card = ({
 
   const showAddToCart = (addToCart) => {
     return (
+      !hideAddToCart &&
       addToCart && (
         <div className="col-12">
           <button
@@ -62,6 +67,23 @@ const Card = ({
     );
   };
 
+  const showGoToCartBtn = (showGoToCart) => {
+    return (
+      showGoToCart && (
+        <div className="col-12">
+          <button
+            onClick={() => {
+              setRedirect(true);
+            }}
+            className="btn btn-block btn-outline-info my-2"
+          >
+            Go To Cart
+          </button>
+        </div>
+      )
+    );
+  };
+
   return (
     <div className="card text-white bg-dark border border-white">
       <div className="card-header lead">{product?.name}</div>
@@ -76,6 +98,7 @@ const Card = ({
         </p>
         <div className="row">
           {showAddToCart(addToCart)}
+          {showGoToCartBtn(showGoToCart)}
           {showRemoveFromCart(removeFromCart)}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Base from "../core/Base";
-import { Link } from "react-router-dom";
 import { authenticate, isAuthenticated, signin } from "../auth/helper";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
