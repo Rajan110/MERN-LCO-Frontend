@@ -32,7 +32,6 @@ const Cart = () => {
                     product={prod}
                     addToCart={false}
                     removeFromCart={true}
-                    goToCart={false}
                     forceRefreshCart={setRefreshCart}
                     refreshCart={refreshCart}
                   />
