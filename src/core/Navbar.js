@@ -28,7 +28,8 @@ const Navbar = ({ history }) => {
             Cart
           </Link>
         </li>
-        {isAuthenticated() && isAuthenticated().user.role === 0 && (
+        {/* && isAuthenticated().user.role === 0 */}
+        {isAuthenticated() && (
           <li className="nav-item">
             <Link
               style={currentTab(history, "/user/dashboard")}

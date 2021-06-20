@@ -4,8 +4,20 @@ export const addItemToCart = (item, next) => {
     if (localStorage.getItem("cart")) {
       cart = JSON.parse(localStorage.getItem("cart"));
     }
-    cart.push({ ...item, count: 1 });
-    localStorage.setItem("cart", JSON.stringify(cart));
+    let foundItem = cart.findIndex((cartItem) => cartItem._id === item._id);
+    console.log(foundItem);
+    if (foundItem >= 0) {
+      cart.filter((cartItem) => {
+        if (item._id === cartItem._id) {
+          cartItem.count = cartItem.count + 1;
+        }
+        return cartItem;
+      });
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      cart.push({ ...item, count: 1 });
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
     next();
   }
 };
@@ -20,6 +32,7 @@ export const removeItemFromCart = (productId) => {
       if (productId === product._id) {
         cart.splice(index, 1);
       }
+      return product;
     });
     localStorage.setItem("cart", JSON.stringify(cart));
   }

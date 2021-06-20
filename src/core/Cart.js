@@ -11,7 +11,7 @@ const Cart = () => {
   const [cartProducts, setCartProducts] = useState(null);
   const [refreshCart, setRefreshCart] = useState(false);
 
-  const { user = null, token } = isAuthenticated();
+  const { user = null} = isAuthenticated();
 
   useEffect(() => {
     setCartProducts(loadcart());

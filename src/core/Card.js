@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router";
 import ImageHelper from "./helper/ImageHelper";
 import { addItemToCart, removeItemFromCart } from "./helper/cartHelper";
@@ -13,7 +13,6 @@ const Card = ({
   const [redirect, setRedirect] = useState(false);
   const [showGoToCart, setShowGoToCart] = useState(false);
   const [hideAddToCart, setHideAddToCart] = useState(false);
-  const [count, setCount] = useState(product.count);
 
   const getRedirect = () => {
     if (redirect) {
@@ -93,6 +92,7 @@ const Card = ({
         <p className="lead font-weight-normal text-wrap my-2">
           {product?.description}
         </p>
+        <p className="text-white">Quantity : {product?.count}</p>
         <p className="btn btn-success rounded  btn-sm my-2">
           Rs. {product?.price}
         </p>
