@@ -1,8 +1,8 @@
 import { API } from "../../backend";
 
-export const getAllOrders = (userId,token) => {
-  return fetch(`${API}/order/all/${userId}`, {
-    method: "POST",
+export const getUserOrders = (userId,token) => {
+  return fetch(`${API}/orders/${userId}`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",

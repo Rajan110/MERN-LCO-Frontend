@@ -32,6 +32,7 @@ const Cart = () => {
                     product={prod}
                     addToCart={false}
                     removeFromCart={true}
+                    showQuantity={true}
                     forceRefreshCart={setRefreshCart}
                     refreshCart={refreshCart}
                   />

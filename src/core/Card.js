@@ -7,6 +7,7 @@ const Card = ({
   product,
   addToCart = true,
   removeFromCart = false,
+  showQuantity = false,
   forceRefreshCart = (f) => f, //function (f) {return f}
   refreshCart = undefined,
 }) => {
@@ -83,6 +84,14 @@ const Card = ({
     );
   };
 
+  const dispQuantity = (showQuantity) => {
+    return (
+        showQuantity && (
+            <p className="text-white">Quantity : {product?.count}</p>
+        )
+    );
+  }
+
   return (
     <div className="card text-white bg-dark border border-white">
       <div className="card-header lead">{product?.name}</div>
@@ -92,7 +101,7 @@ const Card = ({
         <p className="lead font-weight-normal text-wrap my-2">
           {product?.description}
         </p>
-        <p className="text-white">Quantity : {product?.count}</p>
+        {dispQuantity(showQuantity)}
         <p className="btn btn-success rounded  btn-sm my-2">
           Rs. {product?.price}
         </p>

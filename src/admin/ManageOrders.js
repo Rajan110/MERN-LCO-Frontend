@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
 import Card from "../core/Card";
-import { getUserOrders } from "./helper/userapicalls";
+import { getAllOrders } from "./helper/adminapicall";
 
-const UserDashBoard = () => {
-  const { user, token } = isAuthenticated();
+const ManageOrders = () => {
+  const { user = null, token } = isAuthenticated();
 
   const [error, setError] = useState("");
   const [allOrders, setAllOrders] = useState([]);
@@ -15,7 +15,7 @@ const UserDashBoard = () => {
   }, []);
 
   const loadOrders = () => {
-    getUserOrders(user._id, token)
+    getAllOrders(user._id, token)
       .then((data) => {
         if (data.error) {
           setError(data.error?.message);
@@ -29,7 +29,7 @@ const UserDashBoard = () => {
   };
 
   return (
-    <Base title="User Dashboard" description="Manage Your Activities Here">
+    <Base title="Manage Orders" description="Manage And Update Orders">
       <div className="h3">Manage Orders</div>
       {allOrders &&
         allOrders.map((order, index) => {
@@ -62,4 +62,4 @@ const UserDashBoard = () => {
   );
 };
 
-export default UserDashBoard;
+export default ManageOrders;

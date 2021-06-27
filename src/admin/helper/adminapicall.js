@@ -159,3 +159,17 @@ export const deleteProduct = (productId, userId, token) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getAllOrders = (userId,token) => {
+    return fetch(`${API}/orders/all/${userId}`, {
+      method: "GET",
+      headers: {
+          Authorization:`Bearer ${token}`,
+          Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => console.log(err));
+  };
